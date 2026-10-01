@@ -1,0 +1,18 @@
+# Sample multi-app workflow for the Computer/Phone Agent.
+# Run it without a device:
+#   python3 -m agent.runner run examples/sample_workflow.yaml --dry-run
+name: sample-settings-tour
+description: Open iOS Settings, read the UI tree, capture a screenshot.
+platform: ios
+app: com.apple.Preferences
+steps:
+  - name: open-settings
+    app: com.apple.Preferences
+    action: open_app
+    params: {}
+  - name: read-ui-tree
+    action: get_tree
+    on_error: retry
+    max_retries: 1
+  - name: screenshot
+    action: get_screen_image
