@@ -125,9 +125,11 @@ class WorkflowRunner:
         self.current_app = app
 
     def _execute_action(self, action: str, params: Dict[str, Any]) -> Dict[str, Any]:
-        if action == "open_app" and "bundle_identifier" not in params:
-            # allow the `app` shorthand to fill in the identifier
-            raise RuntimeError("open_app step needs params.bundle_identifier or step.app")
+        """Dispatch a non-open_app step to the backend verbatim.
+
+        ``open_app`` never reaches here: ``run()`` handles it separately so
+        the step ``app`` shorthand can fill ``params.bundle_identifier``.
+        """
         return self.backend.call(action, params)
 
     # -- public API ----------------------------------------------------
